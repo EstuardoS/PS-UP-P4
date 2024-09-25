@@ -1,180 +1,179 @@
 <div class="container mt-4">
-    <h2>Solicitudes</h2>
-    <div class="d-flex justify-content-end mb-3">
-      <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#createSolicitudModal">
-        <i class="bi bi-plus-lg"></i> Nueva Solicitud
-      </button>
-    </div>
-  
-    <table class="table table-striped">
-      <thead>
-        <tr>
-          <th>Número Solicitud</th>
-          <th>Título</th>
-          <th>Descripción</th>
-          <th>Fecha</th>
-          <th>Prioridad</th>
-          <th>Acciones</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr v-for="solicitud in solicitudes" :key="solicitud.id">
-          <td>{{ solicitud.numeroSolicitud }}</td>
-          <td>{{ solicitud.titulo }}</td>
-          <td>{{ solicitud.descripcion }}</td>
-          <td>{{ solicitud.fechaCreacion }}</td>
-          <td>{{ solicitud.prioridad.nombre }}</td>
-          <td>
-            <i class="bi bi-pencil-square text-primary mx-2" @click="mostrarModalEdicion(solicitud)"></i>
-            <i class="bi bi-trash text-danger mx-2" @click="mostrarEliminarModal(solicitud)"></i>
-          </td>
-        </tr>
-      </tbody>
-    </table>
-  
-    <!-- Modal para crear nueva solicitud -->
-    <div class="modal fade" id="createSolicitudModal" tabindex="-1" aria-labelledby="createSolicitudLabel" aria-hidden="true">
-      <div class="modal-dialog">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title" id="createSolicitudLabel">Nueva Solicitud</h5>
-            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-          </div>
-          <div class="modal-body">
-            <form @submit.prevent="crearSolicitud">
-              <div class="mb-3">
-                <label for="solicitudTitulo" class="form-label">Título</label>
-                <input type="text" class="form-control" id="solicitudTitulo" v-model="nuevoSolicitud.titulo" required>
-              </div>
-              <div class="mb-3">
-                <label for="solicitudDescripcion" class="form-label">Descripción</label>
-                <textarea class="form-control" id="solicitudDescripcion" v-model="nuevoSolicitud.descripcion" rows="3" required></textarea>
-              </div>
-              <div class="mb-3">
-                <label for="solicitudPrioridad" class="form-label">Prioridad</label>
-                <select class="form-select" id="solicitudPrioridad" v-model="nuevoSolicitud.prioridadId" required>
-                  <option value="" disabled selected>Seleccionar prioridad</option>
-                  <option v-for="prioridad in prioridades" :value="prioridad.id" :key="prioridad.id">
-                    {{ prioridad.nombre }}
-                  </option>
-                </select>
-              </div>
-              <div class="mb-3">
-                <label for="solicitudCategoria" class="form-label">Categoría</label>
-                <select class="form-select" id="solicitudCategoria" v-model="nuevoSolicitud.categoriaId" required>
-                  <option value="" disabled selected>Seleccionar categoría</option>
-                  <option v-for="categoria in categorias" :value="categoria.id" :key="categoria.id">
-                    {{ categoria.nombre }}
-                  </option>
-                </select>
-              </div>
-              <div class="mb-3">
-                <label for="solicitudUbicacion" class="form-label">Ubicación</label>
-                <select class="form-select" id="solicitudUbicacion" v-model="nuevoSolicitud.ubicacionId" required>
-                  <option value="" disabled selected>Seleccionar ubicación</option>
-                  <option v-for="ubicacion in ubicaciones" :value="ubicacion.id" :key="ubicacion.id">
-                    {{ ubicacion.nombre }}
-                  </option>
-                </select>
-              </div>
-              <div class="mb-3">
-                <label for="solicitudAsignado" class="form-label">Asignado a</label>
-                <select class="form-select" id="solicitudAsignado" v-model="nuevoSolicitud.personaId" required>
-                  <option value="" disabled selected>Seleccionar persona</option>
-                  <option v-for="persona in personas" :value="persona.id" :key="persona.id">
-                    {{ persona.nombre }}
-                  </option>
-                </select>
-              </div>
-              <button type="submit" class="btn btn-primary">Crear Solicitud</button>
-            </form>
-          </div>
+  <h2>Solicitudes</h2>
+  <div class="d-flex justify-content-end mb-3">
+    <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#createSolicitudModal">
+      <i class="bi bi-plus-lg"></i> Nueva Solicitud
+    </button>
+  </div>
+
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        <th>Número Solicitud</th>
+        <th>Título</th>
+        <th>Descripción</th>
+        <th>Fecha</th>
+        <th>Prioridad</th>
+        <th>Acciones</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr v-for="solicitud in solicitudes" :key="solicitud.id">
+        <td>{{ solicitud.numeroSolicitud }}</td>
+        <td>{{ solicitud.titulo }}</td>
+        <td>{{ solicitud.descripcion }}</td>
+        <td>{{ solicitud.fechaCreacion }}</td>
+        <td>{{ solicitud.prioridad.nombre }}</td>
+        <td>
+          <i class="bi bi-pencil-square text-primary mx-2" @click="mostrarModalEdicion(solicitud)"></i>
+          <i class="bi bi-trash text-danger mx-2" @click="mostrarEliminarModal(solicitud)"></i>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+  <!-- Modal para crear nueva solicitud -->
+  <div class="modal fade" id="createSolicitudModal" tabindex="-1" aria-labelledby="createSolicitudLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="createSolicitudLabel">Nueva Solicitud</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
-      </div>
-    </div>
-  
-    <!-- Modal para editar solicitud -->
-    <div class="modal fade" id="editSolicitudModal" tabindex="-1" aria-labelledby="editSolicitudLabel" aria-hidden="true">
-      <div class="modal-dialog">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title" id="editSolicitudLabel">Editar Solicitud</h5>
-            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-          </div>
-          <div class="modal-body">
-            <form @submit.prevent="actualizarSolicitud">
-              <div class="mb-3">
-                <label for="editSolicitudNumero" class="form-label">Número Solicitud</label>
-                <input type="text" v-if="solicitudSeleccionada" class="form-control" id="editSolicitudNumero" v-model="solicitudSeleccionada.numeroSolicitud" readonly>
-              </div>
-              <div class="mb-3">
-                <label for="editSolicitudTitulo" class="form-label">Título</label>
-                <input type="text" v-if="solicitudSeleccionada" class="form-control" id="editSolicitudTitulo" v-model="solicitudSeleccionada.titulo" required>
-              </div>
-              <div class="mb-3">
-                <label for="editSolicitudDescripcion" class="form-label">Descripción</label>
-                <textarea v-if="solicitudSeleccionada" class="form-control" id="editSolicitudDescripcion" v-model="solicitudSeleccionada.descripcion" rows="3" required></textarea>
-              </div>
-              <div class="mb-3">
-                <label for="editSolicitudFecha" class="form-label">Fecha</label>
-                <input type="date" v-if="solicitudSeleccionada" class="form-control" id="editSolicitudFecha" v-model="solicitudSeleccionada.fechaCreacion" readonly>
-              </div>
-              <div class="mb-3">
-                <label for="editSolicitudPrioridad" class="form-label">Prioridad</label>
-                <select v-if="solicitudSeleccionada" class="form-select" id="editSolicitudPrioridad" v-model="solicitudSeleccionada.prioridadId" required>
-                  <option v-for="prioridad in prioridades" :value="prioridad.id" :key="prioridad.id">
-                    {{ prioridad.nombre }}
-                  </option>
-                </select>
-              </div>
-              <div class="mb-3">
-                <label for="editSolicitudCategoria" class="form-label">Categoría</label>
-                <select v-if="solicitudSeleccionada" class="form-select" id="editSolicitudCategoria" v-model="solicitudSeleccionada.categoriaId" required>
-                  <option v-for="categoria in categorias" :value="categoria.id" :key="categoria.id">
-                    {{ categoria.nombre }}
-                  </option>
-                </select>
-              </div>
-              <div class="mb-3">
-                <label for="editSolicitudUbicacion" class="form-label">Ubicación</label>
-                <select v-if="solicitudSeleccionada" class="form-select" id="editSolicitudUbicacion" v-model="solicitudSeleccionada.ubicacionId" required>
-                  <option v-for="ubicacion in ubicaciones" :value="ubicacion.id" :key="ubicacion.id">
-                    {{ ubicacion.nombre }}
-                  </option>
-                </select>
-              </div>
-              <div class="mb-3">
-                <label for="editSolicitudAsignado" class="form-label">Asignado a</label>
-                <select v-if="solicitudSeleccionada" class="form-select" id="editSolicitudAsignado" v-model="solicitudSeleccionada.personaId" required>
-                  <option v-for="persona in personas" :value="persona.id" :key="persona.id">
-                    {{ persona.nombre }}
-                  </option>
-                </select>
-              </div>
-              <button type="submit" class="btn btn-primary">Actualizar Solicitud</button>
-            </form>
-          </div>
-        </div>
-      </div>
-    </div>
-  
-    <!-- Modal para eliminar solicitud -->
-    <div class="modal fade" id="deleteSolicitudModal" tabindex="-1" aria-labelledby="deleteSolicitudLabel" aria-hidden="true">
-      <div class="modal-dialog">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title" id="deleteSolicitudLabel">Eliminar Solicitud</h5>
-            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-          </div>
-          <div class="modal-body">
-            <p v-if="solicitudSeleccionada">¿Está seguro de que desea eliminar la solicitud <strong>{{ solicitudSeleccionada.numeroSolicitud }}</strong>?</p>
-          </div>
-          <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-            <button type="button" class="btn btn-danger" @click="eliminarSolicitud">Eliminar</button>
-          </div>
+        <div class="modal-body">
+          <form @submit.prevent="crearSolicitud">
+            <div class="mb-3">
+              <label for="solicitudTitulo" class="form-label">Título</label>
+              <input type="text" class="form-control" id="solicitudTitulo" v-model="nuevoSolicitud.titulo" required>
+            </div>
+            <div class="mb-3">
+              <label for="solicitudDescripcion" class="form-label">Descripción</label>
+              <textarea class="form-control" id="solicitudDescripcion" v-model="nuevoSolicitud.descripcion" rows="3" required></textarea>
+            </div>
+            <div class="mb-3">
+              <label for="solicitudPrioridad" class="form-label">Prioridad</label>
+              <select class="form-select" id="solicitudPrioridad" v-model="nuevoSolicitud.prioridadId" required>
+                <option value="" disabled selected>Seleccionar prioridad</option>
+                <option v-for="prioridad in prioridades" :value="prioridad.id" :key="prioridad.id">
+                  {{ prioridad.nombre }}
+                </option>
+              </select>
+            </div>
+            <div class="mb-3">
+              <label for="solicitudCategoria" class="form-label">Categoría</label>
+              <select class="form-select" id="solicitudCategoria" v-model="nuevoSolicitud.categoriaId" required>
+                <option value="" disabled selected>Seleccionar categoría</option>
+                <option v-for="categoria in categorias" :value="categoria.id" :key="categoria.id">
+                  {{ categoria.nombre }}
+                </option>
+              </select>
+            </div>
+            <div class="mb-3">
+              <label for="solicitudUbicacion" class="form-label">Ubicación</label>
+              <select class="form-select" id="solicitudUbicacion" v-model="nuevoSolicitud.ubicacionId" required>
+                <option value="" disabled selected>Seleccionar ubicación</option>
+                <option v-for="ubicacion in ubicaciones" :value="ubicacion.id" :key="ubicacion.id">
+                  {{ ubicacion.nombre }}
+                </option>
+              </select>
+            </div>
+            <div class="mb-3">
+              <label for="solicitudAsignado" class="form-label">Asignado a</label>
+              <select class="form-select" id="solicitudAsignado" v-model="nuevoSolicitud.personaId" required>
+                <option value="" disabled selected>Seleccionar persona</option>
+                <option v-for="persona in personas" :value="persona.id" :key="persona.id">
+                  {{ persona.nombre }}
+                </option>
+              </select>
+            </div>
+            <button type="submit" class="btn btn-primary">Crear Solicitud</button>
+          </form>
         </div>
       </div>
     </div>
   </div>
-  
+
+  <!-- Modal para editar solicitud -->
+  <div class="modal fade" id="editSolicitudModal" tabindex="-1" aria-labelledby="editSolicitudLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="editSolicitudLabel">Editar Solicitud</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <form @submit.prevent="actualizarSolicitud">
+            <div class="mb-3">
+              <label for="editSolicitudNumero" class="form-label">Número Solicitud</label>
+              <input type="text" v-if="solicitudSeleccionada" class="form-control" id="editSolicitudNumero" v-model="solicitudSeleccionada.numeroSolicitud" readonly>
+            </div>
+            <div class="mb-3">
+              <label for="editSolicitudTitulo" class="form-label">Título</label>
+              <input type="text" v-if="solicitudSeleccionada" class="form-control" id="editSolicitudTitulo" v-model="solicitudSeleccionada.titulo" required>
+            </div>
+            <div class="mb-3">
+              <label for="editSolicitudDescripcion" class="form-label">Descripción</label>
+              <textarea v-if="solicitudSeleccionada" class="form-control" id="editSolicitudDescripcion" v-model="solicitudSeleccionada.descripcion" rows="3" required></textarea>
+            </div>
+            <div class="mb-3">
+              <label for="editSolicitudFecha" class="form-label">Fecha</label>
+              <input type="date" v-if="solicitudSeleccionada" class="form-control" id="editSolicitudFecha" v-model="solicitudSeleccionada.fechaCreacion" readonly>
+            </div>
+            <div class="mb-3">
+              <label for="editSolicitudPrioridad" class="form-label">Prioridad</label>
+              <select v-if="solicitudSeleccionada" class="form-select" id="editSolicitudPrioridad" v-model="solicitudSeleccionada.prioridadId" required>
+                <option v-for="prioridad in prioridades" :value="prioridad.id" :key="prioridad.id">
+                  {{ prioridad.nombre }}
+                </option>
+              </select>
+            </div>
+            <div class="mb-3">
+              <label for="editSolicitudCategoria" class="form-label">Categoría</label>
+              <select v-if="solicitudSeleccionada" class="form-select" id="editSolicitudCategoria" v-model="solicitudSeleccionada.categoriaId" required>
+                <option v-for="categoria in categorias" :value="categoria.id" :key="categoria.id">
+                  {{ categoria.nombre }}
+                </option>
+              </select>
+            </div>
+            <div class="mb-3">
+              <label for="editSolicitudUbicacion" class="form-label">Ubicación</label>
+              <select v-if="solicitudSeleccionada" class="form-select" id="editSolicitudUbicacion" v-model="solicitudSeleccionada.ubicacionId" required>
+                <option v-for="ubicacion in ubicaciones" :value="ubicacion.id" :key="ubicacion.id">
+                  {{ ubicacion.nombre }}
+                </option>
+              </select>
+            </div>
+            <div class="mb-3">
+              <label for="editSolicitudAsignado" class="form-label">Asignado a</label>
+              <select v-if="solicitudSeleccionada" class="form-select" id="editSolicitudAsignado" v-model="solicitudSeleccionada.personaId" required>
+                <option v-for="persona in personas" :value="persona.id" :key="persona.id">
+                  {{ persona.nombre }}
+                </option>
+              </select>
+            </div>
+            <button type="submit" class="btn btn-primary">Actualizar Solicitud</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal para eliminar solicitud -->
+  <div class="modal fade" id="deleteSolicitudModal" tabindex="-1" aria-labelledby="deleteSolicitudLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="deleteSolicitudLabel">Eliminar Solicitud</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <p v-if="solicitudSeleccionada">¿Está seguro de que desea eliminar la solicitud <strong>{{ solicitudSeleccionada.numeroSolicitud }}</strong>?</p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+          <button type="button" class="btn btn-danger" @click="eliminarSolicitud">Eliminar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div> 

@@ -75,12 +75,13 @@ footer {
   padding: 15px;
   box-shadow: 0 -4px 8px rgba(0, 0, 0, 0.1);
   text-align: center;
-  position: relative;
   width: 100%;
-  bottom: 0;
+  position: absolute; /* Fija el footer en su posición */
+  bottom: 0; /* Siempre en la parte inferior */
+  left: 0;   /* Alineado al lado izquierdo */
+  z-index: 1000; /* Asegura que esté por encima de otros elementos */
 }
 
-/* Haciendo el menú y el contenido responsivos */
 @media (max-width: 992px) {
   .main-container {
     flex-direction: column;
