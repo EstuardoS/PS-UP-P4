@@ -1,0 +1,114 @@
+
+<div class="container mt-4">
+    <h2>Ubicaciones</h2>
+    
+    <!-- Botón para crear nueva ubicación -->
+    <div class="d-flex justify-content-end mb-3">
+        <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#createUbicacionModal">
+            <i class="bi bi-plus-lg"></i> Agregar Ubicación
+        </button>
+    </div>
+
+    <!-- Buscador -->
+    <div class="mb-3">
+        <input type="text" class="form-control" id="searchInput" placeholder="Buscar..." onkeyup="filterTable()">
+    </div>
+
+    <!-- Tabla de ubicaciones -->
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Nombre</th>
+                <th>Domicilio</th>
+                <th>Trabajadores</th>
+                <th>Equipo</th>
+                <th>Proveedores</th>
+                <th>Clientes</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr v-for="ubicacion in ubicaciones" :key="ubicacion.id">
+                <td>{{ ubicacion.id }}</td>
+                <td>{{ ubicacion.nombre }}</td>
+                <td>{{ ubicacion.direccion }}</td>
+                <td>{{ ubicacion.trabajadores }}</td>
+                <td>{{ ubicacion.equipo }}</td>
+                <td>{{ ubicacion.proveedores }}</td>
+                <td>{{ ubicacion.clientes }}</td>
+                <td>
+                    <i class="bi bi-pencil-square text-primary mx-2" @click="mostrarModalEdicion(ubicacion)" data-bs-toggle="modal" data-bs-target="#editUbicacionModal"></i>
+                    <i class="bi bi-trash text-danger mx-2" @click="mostrarModalEliminar(ubicacion)" data-bs-toggle="modal" data-bs-target="#deleteUbicacionModal"></i>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+<!-- Modal para crear nueva ubicación -->
+<div class="modal fade" id="createUbicacionModal" tabindex="-1" aria-labelledby="createUbicacionLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="createUbicacionLabel">Nueva Ubicación</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form @submit.prevent="crearUbicacion">
+                    <div class="mb-3">
+                        <label for="ubicacionNombre" class="form-label">Nombre</label>
+                        <input type="text" class="form-control" id="ubicacionNombre" v-model="nuevaUbicacion.nombre" placeholder="Ingrese nombre de la ubicación" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="ubicacionDomicilio" class="form-label">Domicilio</label>
+                        <input type="text" class="form-control" id="ubicacionDomicilio" v-model="nuevaUbicacion.direccion" placeholder="Ingrese domicilio" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Guardar</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal para editar ubicación -->
+<div class="modal fade" id="editUbicacionModal" tabindex="-1" aria-labelledby="editUbicacionLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="editUbicacionLabel">Editar Ubicación</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form @submit.prevent="actualizarUbicacion">
+                    <div class="mb-3">
+                        <label for="editUbicacionNombre" class="form-label">Nombre</label>
+                        <input type="text" class="form-control" id="editUbicacionNombre" v-if="ubicacionSeleccionada" v-model="ubicacionSeleccionada.nombre" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="editUbicacionDomicilio" class="form-label">Domicilio</label>
+                        <input type="text" class="form-control" id="editUbicacionDomicilio" v-if="ubicacionSeleccionada" v-model="ubicacionSeleccionada.direccion" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Guardar cambios</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal para eliminar ubicación -->
+<div class="modal fade" id="deleteUbicacionModal" tabindex="-1" aria-labelledby="deleteUbicacionLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="deleteUbicacionLabel">Eliminar Ubicación</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p>¿Estás seguro de que deseas eliminar esta ubicación?</p>
+                <button type="button" class="btn btn-danger" @click="eliminarUbicacion">Eliminar</button>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+            </div>
+        </div>
+    </div>
+</div>
