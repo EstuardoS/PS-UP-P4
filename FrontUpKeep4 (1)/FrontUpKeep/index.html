@@ -24,7 +24,17 @@
       <img src="assets/img/logo.png" alt="Logo" class="logo me-3">
       <h2 class="m-0">Jetzt!!</h2>
     </div>
-    <div class="text-end">
+    <div class="text-end d-flex align-items-center">
+      <div class="position-relative me-3">
+        <!-- Botón de notificaciones -->
+        <button class="btn btn-light position-relative">
+          <i class="bi bi-bell"></i>
+          <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+            3 <!-- Aquí va el contador de notificaciones -->
+            <span class="visually-hidden">nuevas notificaciones</span>
+          </span>
+        </button>
+      </div>
       <span id="nombreUsuario"></span>
     </div>
   </header>
