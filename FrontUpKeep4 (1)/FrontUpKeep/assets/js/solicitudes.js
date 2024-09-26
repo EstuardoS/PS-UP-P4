@@ -10,6 +10,7 @@ new Vue({
             ubicacionId: null,
             personaId: null
         },
+        imagen: null, // Se agregó para almacenar la imagen seleccionada
         prioridades: [],
         categorias: [],
         ubicaciones: [],
@@ -39,19 +40,36 @@ new Vue({
                 console.error('Error en la solicitud', error);
             }
         },
+
+        // Método para manejar la selección del archivo de imagen
+        handleFileChange(event) {
+            this.imagen = event.target.files[0]; // Almacenar la imagen seleccionada
+        },
+
         async crearSolicitud() {
             try {
+                // Enviar primero los datos de la solicitud sin la imagen
                 const response = await fetch('http://192.168.10.196:5176/api/Solicitud', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify(this.nuevoSolicitud)
                 });
+
                 if (response.ok) {
+                    const solicitudCreada = await response.json(); // Obtener la solicitud creada con su ID
+
+                    // Si hay una imagen seleccionada, hacer el envío de la imagen por separado
+                    if (this.imagen) {
+                        await this.subirImagen(solicitudCreada.id);
+                    }
+
+                    // Refrescar la lista de solicitudes
                     await this.fetchSolicitudes();
                     this.resetNuevaSolicitud();
-                    
+
+                    // Cerrar el modal de creación
                     const modalEl = document.getElementById('createSolicitudModal');
-                    const modalInstance = bootstrap.Modal.getInstance(modalEl); 
+                    const modalInstance = bootstrap.Modal.getInstance(modalEl);
                     modalInstance.hide();
                 } else {
                     console.error('Error al crear solicitud', response.status);
@@ -60,6 +78,27 @@ new Vue({
                 console.error('Error en la solicitud', error);
             }
         },
+
+        // Método para subir la imagen por separado
+        async subirImagen(solicitudId) {
+            try {
+                const formData = new FormData();
+                formData.append('imagen', this.imagen); // Agregar la imagen al FormData
+
+                // Realizar la solicitud POST para subir la imagen
+                const response = await fetch(`http://192.168.10.196:5176/api/Solicitud/${solicitudId}/upload-image`, {
+                    method: 'POST',
+                    body: formData
+                });
+
+                if (!response.ok) {
+                    console.error('Error al subir la imagen', response.status);
+                }
+            } catch (error) {
+                console.error('Error en la solicitud de subida de imagen', error);
+            }
+        },
+
         async actualizarSolicitud() {
             try {
                 const response = await fetch(`http://192.168.10.196:5176/api/Solicitud/${this.solicitudSeleccionada.id}`, {
@@ -80,6 +119,7 @@ new Vue({
                 console.error('Error en la solicitud', error);
             }
         },
+
         async eliminarSolicitud() {
             try {
                 const response = await fetch(`http://192.168.10.196:5176/api/Solicitud/${this.solicitudSeleccionada.id}`, {
@@ -95,16 +135,19 @@ new Vue({
                 console.error('Error en la solicitud', error);
             }
         },
+
         mostrarModalEdicion(solicitud) {
             this.solicitudSeleccionada = { ...solicitud };
             this.modalEditarSolicitud = new bootstrap.Modal(document.getElementById('editSolicitudModal'));
             this.modalEditarSolicitud.show();
         },
+
         mostrarEliminarModal(solicitud) {
             this.solicitudSeleccionada = { ...solicitud };
             this.modalEliminarSolicitud = new bootstrap.Modal(document.getElementById('deleteSolicitudModal'));
             this.modalEliminarSolicitud.show();
         },
+
         resetNuevaSolicitud() {
             this.nuevoSolicitud = {
                 titulo: '',
@@ -114,7 +157,9 @@ new Vue({
                 ubicacionId: null,
                 personaId: null
             };
+            this.imagen = null; // Reiniciar la imagen
         },
+
         async fetchPrioridades() {
             try {
                 const response = await fetch('http://192.168.10.196:5176/api/Prioridad');
@@ -128,6 +173,7 @@ new Vue({
                 console.error('Error en la solicitud', error);
             }
         },
+
         async fetchCategorias() {
             try {
                 const response = await fetch('http://192.168.10.196:5176/api/Categoria');
@@ -141,6 +187,7 @@ new Vue({
                 console.error('Error en la solicitud', error);
             }
         },
+
         async fetchUbicaciones() {
             try {
                 const response = await fetch('http://192.168.10.196:5176/api/Ubicacion');
@@ -154,6 +201,7 @@ new Vue({
                 console.error('Error en la solicitud', error);
             }
         },
+
         async fetchPersonas() {
             try {
                 const response = await fetch('http://192.168.10.196:5176/api/Persona');

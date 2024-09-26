@@ -69,18 +69,19 @@ nav .nav-link:hover {
 }
 
 /* Estilo del footer */
+
 footer {
-  background: linear-gradient(90deg, #6c757d, #adb5bd);
-  color: white;
-  padding: 15px;
-  box-shadow: 0 -4px 8px rgba(0, 0, 0, 0.1);
-  text-align: center;
+  position: fixed;
+  left: 0;
+  bottom: 0;
   width: 100%;
-  position: absolute; /* Fija el footer en su posición */
-  bottom: 0; /* Siempre en la parte inferior */
-  left: 0;   /* Alineado al lado izquierdo */
-  z-index: 1000; /* Asegura que esté por encima de otros elementos */
+  background-color: #9098a0; /* Cambia el color según tu diseño */
+  padding: 1rem; /* Ajusta el padding según sea necesario */
+  text-align: center; /* Centrar el contenido */
+  z-index: 1000; /* Asegúrate de que esté por encima de otros elementos */
+  position: relative;
 }
+
 
 @media (max-width: 992px) {
   .main-container {
@@ -155,18 +156,6 @@ html, body {
     width: 100%;
     margin-bottom: 20px;
   }
-}
-
-/* Footer siempre pegado al fondo */
-footer {
-  background: linear-gradient(90deg, #6c757d, #adb5bd);
-  color: white;
-  padding: 15px;
-  box-shadow: 0 -4px 8px rgba(0, 0, 0, 0.1);
-  text-align: center;
-  position: relative;
-  width: 100%;
-  bottom: 0;
 }
 
 /* Estilo del contenido dentro del footer */

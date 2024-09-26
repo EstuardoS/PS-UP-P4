@@ -1,4 +1,4 @@
-<div class="container mt-4"> 
+<div class="container mt-4">
   <h2>Solicitudes</h2>
   <div class="d-flex justify-content-end mb-3">
     <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#createSolicitudModal">
@@ -90,7 +90,7 @@
             <!-- Espacio para subir una imagen -->
             <div class="mb-3">
               <label for="solicitudImagen" class="form-label">Subir imagen</label>
-              <input type="file" class="form-control" id="solicitudImagen" accept="image/*">
+              <input type="file" class="form-control" id="solicitudImagen" @change="handleFileChange" accept="image/*">
             </div>
 
             <button type="submit" class="btn btn-primary">Crear Solicitud</button>
