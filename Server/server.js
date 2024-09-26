@@ -1,43 +1,32 @@
 const express = require('express');
 const multer = require('multer');
 const path = require('path');
-const fs = require('fs');
 
 const app = express();
-const port = 3000; // Cambia el puerto si es necesario
+const PORT = 3000;
 
-// Crear carpeta para guardar las imágenes si no existe
-const uploadDir = path.join(__dirname, 'fotos_solicitudes');
-if (!fs.existsSync(uploadDir)) {
-    fs.mkdirSync(uploadDir);
-}
-
-// Configurar multer para guardar archivos en la carpeta especificada
+// Configurar multer para guardar archivos en 'Servers/fotos_solicitudes'
 const storage = multer.diskStorage({
     destination: (req, file, cb) => {
-        cb(null, uploadDir); // Cambiar aquí a la carpeta que deseas
+        cb(null, path.join(__dirname, 'fotos_solicitudes'));
     },
     filename: (req, file, cb) => {
-        cb(null, Date.now() + path.extname(file.originalname)); // Renombrar el archivo para evitar colisiones
+        cb(null, `${Date.now()}-${file.originalname}`);
     }
 });
 
-const upload = multer({ storage: storage });
+const upload = multer({ storage });
 
-// Middleware para permitir archivos estáticos (HTML, CSS, JS)
-app.use(express.static(path.join(__dirname, 'public')));
-
-// Endpoint para manejar la carga de imágenes
-app.post('/upload', upload.single('image'), (req, res) => {
+// Ruta para subir la imagen
+app.post('/upload-image', upload.single('imagen'), (req, res) => {
     if (req.file) {
-        console.log(`Imagen subida: ${req.file.filename}`);
-        return res.status(200).json({ message: 'Imagen subida exitosamente' });
+        res.status(200).send({ message: 'Imagen subida exitosamente', file: req.file });
     } else {
-        return res.status(400).json({ message: 'No se subió ninguna imagen' });
+        res.status(400).send({ message: 'Error al subir la imagen' });
     }
 });
 
 // Iniciar el servidor
-app.listen(port, () => {
-    console.log(`Servidor corriendo en http://localhost:${port}`);
+app.listen(PORT, () => {
+    console.log(`Servidor corriendo en http://localhost:${PORT}`);
 });

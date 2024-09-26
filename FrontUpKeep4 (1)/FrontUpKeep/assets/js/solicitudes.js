@@ -60,7 +60,7 @@ new Vue({
 
                     // Si hay una imagen seleccionada, hacer el envío de la imagen por separado
                     if (this.imagen) {
-                        await this.subirImagen(solicitudCreada.id);
+                        await this.subirImagen(); // Cambié esta línea para que no envíe el ID de la solicitud
                     }
 
                     // Refrescar la lista de solicitudes
@@ -79,14 +79,14 @@ new Vue({
             }
         },
 
-        // Método para subir la imagen por separado
-        async subirImagen(solicitudId) {
+        // Método para subir la imagen directamente a la carpeta fotos_solicitudes
+        async subirImagen() {
             try {
                 const formData = new FormData();
                 formData.append('imagen', this.imagen); // Agregar la imagen al FormData
 
                 // Realizar la solicitud POST para subir la imagen
-                const response = await fetch(`http://192.168.10.196:5176/api/Solicitud/${solicitudId}/upload-image`, {
+                const response = await fetch('http://localhost:3000/upload-image', { // Cambia esta URL a la que hayas configurado en tu servidor
                     method: 'POST',
                     body: formData
                 });
