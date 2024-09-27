@@ -1,14 +1,13 @@
-/* Estilo general del body */
+/* Estilo general */
 body {
   font-family: 'Poppins', sans-serif;
   background-color: #f1f1f1;
   margin: 0;
-  min-height: 100vh;
   display: flex;
   flex-direction: column;
+  min-height: 100vh;
 }
 
-/* Estilo del header */
 header {
   background: linear-gradient(90deg, #6c757d, #adb5bd);
   color: white;
@@ -21,31 +20,30 @@ header .logo {
   height: auto;
 }
 
-/* Estilo del contenedor principal para pantallas grandes */
 .main-container {
   display: flex;
   flex: 1;
-  min-height: 100vh; /* Ocupa al menos la altura completa de la pantalla */
+  min-height: 100vh;
 }
 
-/* Estilo del menú lateral */
-nav {
-  background: linear-gradient(180deg, #6c757d, #adb5bd);
-  border-radius: 8px;
-  border: 2px solid #495057; /* Borde más marcado */
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+nav.Menu2 {
   width: 250px;
   margin: 20px;
   padding: 20px;
+  background: linear-gradient(180deg, #6c757d, #adb5bd);
+  border-radius: 8px;
+  border: 2px solid #495057;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   flex-shrink: 0;
+  display: block; /* Cambia a block por defecto */
 }
 
-nav h4 {
+nav.Menu2 h4 {
   font-weight: 600;
   color: white;
 }
 
-nav .nav-link {
+nav.Menu2 .nav-link {
   font-weight: 500;
   padding: 10px 15px;
   border-radius: 8px;
@@ -53,12 +51,11 @@ nav .nav-link {
   transition: background-color 0.3s ease;
 }
 
-nav .nav-link:hover {
+nav.Menu2 .nav-link:hover {
   background-color: #6c757d;
   text-decoration: none;
 }
 
-/* Estilo del contenedor del contenido principal */
 .container-fluid {
   flex-grow: 1;
   padding: 20px;
@@ -68,45 +65,59 @@ nav .nav-link:hover {
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
 }
 
-/* Estilo del footer */
-
+/* Footer */
 footer {
-  position: fixed;
-  left: 0;
-  bottom: 0;
-  width: 100%;
-  background-color: #9098a0; /* Cambia el color según tu diseño */
-  padding: 1rem; /* Ajusta el padding según sea necesario */
-  text-align: center; /* Centrar el contenido */
-  z-index: 1000; /* Asegúrate de que esté por encima de otros elementos */
+  background-color: #9098a0;
+  padding: 1rem;
+  text-align: center;
   position: relative;
+  z-index: 1000;
 }
 
+/* Botón de menú */
+.menu-button {
+  position: fixed;
+  top: 60px; /* Ajuste de la posición */
+  left: 15px;
+  z-index: 1001;
+  display: none;
+}
 
+/* Estilos responsive */
 @media (max-width: 992px) {
   .main-container {
     flex-direction: column;
   }
 
-  nav {
+  nav.Menu2 {
     width: 100%;
     margin-bottom: 20px;
   }
+
+  .menu-button {
+    display: block;
+  }
+
+  nav.Menu2 {
+    position: absolute;
+    left: -15px;
+    transition: left 0.3s ease-in-out;
+  }
+
+  /* Eliminado el estilo de activación, ahora se maneja por display */
 }
 
 @media (max-width: 576px) {
   header {
-    display: flex;
     flex-direction: column;
     align-items: center;
   }
 
   header h2 {
     font-size: 1.5rem;
-    text-align: center;
   }
 
-  nav {
+  nav.Menu2 {
     width: 100%;
     margin: 10px 0;
     padding: 10px;
@@ -116,49 +127,4 @@ footer {
     margin: 10px;
     padding: 10px;
   }
-}
-
-
-/* Asegurar que el cuerpo ocupe al menos la altura completa de la ventana */
-html, body {
-  height: 100%;
-  margin: 0;
-  display: flex;
-  flex-direction: column;
-}
-
-/* El contenedor principal debe crecer para ocupar todo el espacio disponible */
-.main-container {
-  flex: 1;
-  display: flex;
-  flex-direction: row;
-  min-height: 0; /* Evita que se expanda más allá de la pantalla */
-}
-
-/* El contenido principal debe crecer para ocupar todo el espacio disponible */
-.container-fluid {
-  flex-grow: 1;
-  padding: 20px;
-  margin: 20px;
-  background-color: white;
-  border-radius: 10px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
-  min-height: calc(100vh - 170px); /* Resta el tamaño del header y footer */
-}
-
-/* Ajustar el menú para pantallas más pequeñas */
-@media (max-width: 992px) {
-  .main-container {
-    flex-direction: column;
-  }
-
-  nav {
-    width: 100%;
-    margin-bottom: 20px;
-  }
-}
-
-/* Estilo del contenido dentro del footer */
-footer p {
-  margin: 0;
 }

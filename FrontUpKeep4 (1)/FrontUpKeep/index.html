@@ -18,7 +18,7 @@
   <script src="https://cdn.jsdelivr.net/npm/vue@2"></script>
 </head>
 <body>
-  <!-- Header, Menú y Footer -->
+  <!-- Header -->
   <header class="bg-dark text-white p-3 d-flex justify-content-between align-items-center">
     <div class="d-flex align-items-center">
       <img src="assets/img/logo.png" alt="Logo" class="logo me-3">
@@ -29,22 +29,41 @@
         <!-- Botón de notificaciones -->
         <button class="btn btn-light position-relative">
           <i class="bi bi-bell"></i>
-          <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
-            3 <!-- Aquí va el contador de notificaciones -->
-            <span class="visually-hidden">nuevas notificaciones</span>
-          </span>
+          <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">3</span>
         </button>
       </div>
       <span id="nombreUsuario"></span>
     </div>
   </header>
 
-  <div class="main-container">
-    <div id="menu">
-      <!-- Aquí irá el contenido del menú cargado dinámicamente -->
-    </div>
+  <!-- Botón para mostrar menú en pantallas pequeñas -->
+  <button id="menuButton" class="menu-button btn btn-primary">
+    <i class="bi bi-list"></i>
+  </button>
 
-    <!-- Contenedor donde se carga el contenido dinámico -->
+  <div class="main-container">
+    <nav id="menu" class="Menu2 bg-dark text-white p-3 rounded shadow" style="display: none;">
+      <h4 class="text-center mb-4">Menú</h4>
+      <ul class="nav flex-column">
+        <li class="nav-item">
+          <a class="nav-link text-white" href="solicitudes.html"><i class="bi bi-file-earmark-text"></i> Solicitudes</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link text-white" href="ordenes.html"><i class="bi bi-tools"></i> Órdenes de Trabajo</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link text-white" href="ubicaciones.html"><i class="bi bi-geo-alt"></i> Ubicaciones</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link text-white" href="usuarios.html"><i class="bi bi-person"></i> Usuarios</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link text-white" href="logout.html"><i class="bi bi-box-arrow-right"></i> Logout</a>
+        </li>
+      </ul>
+    </nav>
+
+    <!-- Contenedor del contenido principal -->
     <div class="container-fluid" id="content">
       <!-- Aquí se cargará el contenido dinámico -->
     </div>
@@ -61,6 +80,37 @@
   <script src="assets/js/app.js"></script>
   <script>
     document.getElementById('year').textContent = new Date().getFullYear();
+
+    // Mostrar/Ocultar menú
+    const menu = document.getElementById('menu');
+    const menuButton = document.getElementById('menuButton');
+    const menuLinks = document.querySelectorAll('#menu .nav-link');
+
+    // Inicializa el estado del menú
+    let isMenuVisible = false;
+
+    menuButton.addEventListener('click', () => {
+      isMenuVisible = !isMenuVisible; // Alterna el estado
+      menu.style.display = isMenuVisible ? 'block' : 'none'; // Muestra/oculta el menú
+    });
+
+    // Cerrar menú al hacer clic en una opción
+    menuLinks.forEach(link => {
+      link.addEventListener('click', () => {
+        isMenuVisible = false; // Cambia el estado a falso
+        menu.style.display = 'none'; // Oculta el menú
+      });
+    });
+
+    // Manejador de eventos para el cambio de tamaño de la ventana
+    window.addEventListener('resize', () => {
+      if (window.innerWidth > 992) {
+        menu.style.display = 'block'; // Asegura que el menú esté visible
+        isMenuVisible = true; // Cambia el estado a verdadero
+      } else if (!isMenuVisible) {
+        menu.style.display = 'none'; // Mantiene el menú oculto en pantallas pequeñas
+      }
+    });
   </script>
 </body>
 </html>
